@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-area {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            height: 60%;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .chatbot {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            border-right: 1px solid #ccc;
+        }
+        .chatbot:last-child {
+            border-right: none;
+        }
+        .chatbot h2 {
+            text-align: center;
+            color: #555;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .input-area {
+            width: 80%;
+            margin-top: 10px;
+        }
+        .input-area input {
+            width: 80%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .input-area button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #35424a;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .input-area button:hover {
+            background-color: #4b5e6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-area">
+            <div class="chatbot" id="chatbot1">
+                <h2>Bot 1</h2>
+                <!-- Chatbot 1 messages will appear here -->
+            </div>
+            <div class="chatbot" id="chatbot2">
+                <h2>Bot 2</h2>
+                <!-- Chatbot 2 messages will appear here -->
+            </div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Enter a prompt here...">
+            <button onclick="simulateConversation()">Send</button>
+        </div>
+    </div>
+    <script>
+        function simulateConversation() {
+            const userInput = document.getElementById("userInput").value;
+            if (!userInput) return;
+
+            // Simulate Bot 1 response
+            const bot1Response = "Bot 1: " + userInput + " response.";
+            const bot1Div = document.createElement("div");
+            bot1Div.classList.add("message");
+            bot1Div.textContent = bot1Response;
+            document.getElementById("chatbot1").appendChild(bot1Div);
+
+            // Simulate Bot 2 response
+            const bot2Response = "Bot 2: Response to '" + userInput + "'.";
+            const bot2Div = document.createElement("div");
+            bot2Div.classList.add("message");
+            bot2Div.textContent = bot2Response;
+            document.getElementById("chatbot2").appendChild(bot2Div);
+
+            // Clear input
+            document.getElementById("userInput").value = "";
+
+            // Auto-scroll to the bottom
+            const chatbot1 = document.getElementById("chatbot1");
+            const chatbot2 = document.getElementById("chatbot2");
+            chatbot1.scrollTop = chatbot1.scrollHeight;
+            chatbot2.scrollTop = chatbot2.scrollHeight;
+        }
+    </script>
+</body>
+</html>
