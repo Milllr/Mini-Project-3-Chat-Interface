@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot Simulation</title>
+    <title>Dynamic Character Representation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,113 +14,185 @@
         .container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
+            padding: 20px;
         }
         .chat-area {
             display: flex;
             justify-content: space-between;
-            width: 80%;
-            height: 60%;
+            width: 90%;
+            margin-top: 20px;
+        }
+        .bot-section {
+            flex: 1;
+            padding: 10px;
             background: #fff;
             border: 1px solid #ccc;
             border-radius: 10px;
-            overflow: hidden;
+            margin: 0 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .chatbot {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-            border-right: 1px solid #ccc;
-        }
-        .chatbot:last-child {
-            border-right: none;
-        }
-        .chatbot h2 {
+        .bot-section h2 {
             text-align: center;
             color: #555;
             border-bottom: 2px solid #ccc;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
         }
-        .message {
-            margin: 10px 0;
+        .character-image {
+            margin-bottom: 20px; /* Space between header and image */
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+        .sliders {
+            width: 100%;
+            margin-top: 20px; /* Move sliders down */
+        }
+        .slider {
+            display: flex;
+            align-items: center;
+            margin: 15px 0; /* More space between each slider */
+        }
+        .slider label {
+            flex: 1;
+            font-size: 16px;
+        }
+        .slider input {
+            flex: 2;
+        }
+        .slider span {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        .messages {
+            flex: 1;
+            width: 100%;
+            height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
             padding: 10px;
+            border: 1px solid #ddd;
             border-radius: 5px;
             background: #f9f9f9;
-            border: 1px solid #ddd;
         }
-        .input-area {
-            width: 80%;
-            margin-top: 10px;
-        }
-        .input-area input {
-            width: 80%;
+        .message {
+            margin: 5px 0;
             padding: 10px;
-            margin-right: 10px;
+            border-radius: 5px;
+            background: #fff;
             border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .input-area button {
-            padding: 10px 15px;
-            border: none;
-            background-color: #35424a;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .input-area button:hover {
-            background-color: #4b5e6b;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="chat-area">
-            <div class="chatbot" id="chatbot1">
+            <div class="bot-section" id="bot1">
                 <h2>Bot 1</h2>
-                <!-- Chatbot 1 messages will appear here -->
+                <img src="" id="bot1Image" class="character-image" alt="Character">
+                <div class="sliders">
+                    <div class="slider">
+                        <label>Age:</label>
+                        <input type="range" id="ageSlider1" min="5" max="95" value="50">
+                        <span id="ageValue1">50</span>
+                    </div>
+                    <div class="slider">
+                        <label>Political:</label>
+                        <input type="range" id="politicalSlider1" min="-1" max="1" step="0.1" value="0">
+                        <span id="politicalValue1">0</span>
+                    </div>
+                    <div class="slider">
+                        <label>Wealth:</label>
+                        <input type="range" id="wealthSlider1" min="0" max="1" step="0.1" value="0.5">
+                        <span id="wealthValue1">0.5</span>
+                    </div>
+                </div>
+                <div class="messages" id="bot1Messages"></div>
             </div>
-            <div class="chatbot" id="chatbot2">
+            <div class="bot-section" id="bot2">
                 <h2>Bot 2</h2>
-                <!-- Chatbot 2 messages will appear here -->
+                <img src="" id="bot2Image" class="character-image" alt="Character">
+                <div class="sliders">
+                    <div class="slider">
+                        <label>Age:</label>
+                        <input type="range" id="ageSlider2" min="5" max="95" value="50">
+                        <span id="ageValue2">50</span>
+                    </div>
+                    <div class="slider">
+                        <label>Political:</label>
+                        <input type="range" id="politicalSlider2" min="-1" max="1" step="0.1" value="0">
+                        <span id="politicalValue2">0</span>
+                    </div>
+                    <div class="slider">
+                        <label>Wealth:</label>
+                        <input type="range" id="wealthSlider2" min="0" max="1" step="0.1" value="0.5">
+                        <span id="wealthValue2">0.5</span>
+                    </div>
+                </div>
+                <div class="messages" id="bot2Messages"></div>
             </div>
-        </div>
-        <div class="input-area">
-            <input type="text" id="userInput" placeholder="Enter a prompt here...">
-            <button onclick="simulateConversation()">Send</button>
         </div>
     </div>
     <script>
-        function simulateConversation() {
-            const userInput = document.getElementById("userInput").value;
-            if (!userInput) return;
+        // Helper function to determine character based on slider values
+        function getCharacterImage(age, political, wealth) {
+            let ageCategory, politicalColor;
 
-            // Simulate Bot 1 response
-            const bot1Response = "Bot 1: " + userInput + " response.";
-            const bot1Div = document.createElement("div");
-            bot1Div.classList.add("message");
-            bot1Div.textContent = bot1Response;
-            document.getElementById("chatbot1").appendChild(bot1Div);
+            // Determine age category
+            if (age >= 5 && age < 15) ageCategory = "child";
+            else if (age >= 15 && age < 25) ageCategory = "teen";
+            else if (age >= 25 && age < 60) ageCategory = "adult";
+            else ageCategory = "old";
 
-            // Simulate Bot 2 response
-            const bot2Response = "Bot 2: Response to '" + userInput + "'.";
-            const bot2Div = document.createElement("div");
-            bot2Div.classList.add("message");
-            bot2Div.textContent = bot2Response;
-            document.getElementById("chatbot2").appendChild(bot2Div);
+            // Determine political inclination
+            if (political >= -1 && political < -0.2) politicalColor = "blue";
+            else if (political >= -0.2 && political <= 0.2) politicalColor = "green";
+            else politicalColor = "red";
 
-            // Clear input
-            document.getElementById("userInput").value = "";
+            // Wealth doesn't affect the image, but could be used for future expansion
 
-            // Auto-scroll to the bottom
-            const chatbot1 = document.getElementById("chatbot1");
-            const chatbot2 = document.getElementById("chatbot2");
-            chatbot1.scrollTop = chatbot1.scrollHeight;
-            chatbot2.scrollTop = chatbot2.scrollHeight;
+            // Combine to create the image path
+            return `images/${ageCategory}_${politicalColor}0.JPG`;
         }
+
+        // Update slider values dynamically and adjust images
+        document.querySelectorAll("input[type='range']").forEach(slider => {
+            slider.addEventListener("input", event => {
+                const sliderId = event.target.id;
+                const spanId = sliderId.replace("Slider", "Value");
+                document.getElementById(spanId).textContent = event.target.value;
+
+                // Update character image
+                const botNumber = sliderId.includes("1") ? "1" : "2";
+                const age = document.getElementById(`ageSlider${botNumber}`).value;
+                const political = document.getElementById(`politicalSlider${botNumber}`).value;
+                const wealth = document.getElementById(`wealthSlider${botNumber}`).value;
+                const imagePath = getCharacterImage(age, political, wealth);
+
+                // Set image for the corresponding bot
+                document.getElementById(`bot${botNumber}Image`).src = imagePath;
+            });
+
+
+
+            // to do list
+            // 1. add comments and human stuff 
+            // 2. implement wealth images from jade
+            // 3. make them talk
+            // 4. add text output from code
+            // 5. add default image case
+
+            
+
+        });
     </script>
 </body>
 </html>
+
+
+
