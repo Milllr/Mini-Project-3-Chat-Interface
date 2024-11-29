@@ -48,6 +48,7 @@
             height: 100px;
             border-radius: 50%;
             border: 2px solid #ddd;
+
         }
         .sliders {
             width: 100%;
@@ -141,24 +142,30 @@
     <script>
         // Helper function to determine character based on slider values
         function getCharacterImage(age, political, wealth) {
-            let ageCategory, politicalColor;
+            let ageCategory, politicalColor, wealthStatus;
 
             // Determine age category
             if (age >= 5 && age < 15) ageCategory = "child";
             else if (age >= 15 && age < 25) ageCategory = "teen";
             else if (age >= 25 && age < 60) ageCategory = "adult";
-            else ageCategory = "old";
+            else if (age >= 60 && age < 100) ageCategory = "old";
+            else ageCategory = "";
 
             // Determine political inclination
             if (political >= -1 && political < -0.2) politicalColor = "blue";
             else if (political >= -0.2 && political <= 0.2) politicalColor = "green";
-            else politicalColor = "red";
+            else if (political <= 1 && political > 0.2) politicalColor = "red";
+            else politicalColor = "";
 
             // Wealth doesn't affect the image, but could be used for future expansion
+            if (wealth > 0.5) wealthStatus = "rich";
+            else if (wealth < 0.5) wealthStatus = "poor";
+            else wealthStatus = "";
 
             // Combine to create the image path
-            return `images/${ageCategory}_${politicalColor}0.JPG`;
+            return `images/${ageCategory}/${ageCategory}_${politicalColor}_${wealthStatus}0.JPG`;
         }
+        
 
         // Update slider values dynamically and adjust images
         document.querySelectorAll("input[type='range']").forEach(slider => {
@@ -177,6 +184,62 @@
                 // Set image for the corresponding bot
                 document.getElementById(`bot${botNumber}Image`).src = imagePath;
             });
+
+
+
+    function initializeBaseCaseImages() {
+        const defaultAge = 50; // Replace with your base ageCategory
+        const defaultPolitical = 0; // Replace with your base politicalColor
+        const defaultWealth = 0.5; // Replace with your base wealthStatus
+
+        // Set the base image for Bot 1
+        const bot1ImagePath = getCharacterImage(defaultAge, defaultPolitical, defaultWealth);
+        document.getElementById('bot1Image').src = bot1ImagePath;
+
+        // Set the base image for Bot 2
+        const bot2ImagePath = getCharacterImage(defaultAge, defaultPolitical, defaultWealth);
+        document.getElementById('bot2Image').src = bot2ImagePath;
+
+        // Initialize the sliders with the base values
+        document.getElementById('ageSlider1').value = defaultAge;
+        document.getElementById('politicalSlider1').value = defaultPolitical;
+        document.getElementById('wealthSlider1').value = defaultWealth;
+        document.getElementById('ageSlider2').value = defaultAge;
+        document.getElementById('politicalSlider2').value = defaultPolitical;
+        document.getElementById('wealthSlider2').value = defaultWealth;
+
+        // Update the displayed values
+        document.getElementById('ageValue1').textContent = defaultAge;
+        document.getElementById('politicalValue1').textContent = defaultPolitical;
+        document.getElementById('wealthValue1').textContent = defaultWealth;
+        document.getElementById('ageValue2').textContent = defaultAge;
+        document.getElementById('politicalValue2').textContent = defaultPolitical;
+        document.getElementById('wealthValue2').textContent = defaultWealth;
+}
+
+// Event listener for the sliders
+document.querySelectorAll("input[type='range']").forEach(slider => {
+    slider.addEventListener("input", event => {
+        const sliderId = event.target.id;
+        const spanId = sliderId.replace("Slider", "Value");
+        document.getElementById(spanId).textContent = event.target.value;
+
+        // Update character image
+        const botNumber = sliderId.includes("1") ? "1" : "2";
+        const age = document.getElementById(`ageSlider${botNumber}`).value;
+        const political = document.getElementById(`politicalSlider${botNumber}`).value;
+        const wealth = document.getElementById(`wealthSlider${botNumber}`).value;
+        const imagePath = getCharacterImage(age, political, wealth);
+
+        // Set image for the corresponding bot
+        document.getElementById(`bot${botNumber}Image`).src = imagePath;
+    });
+});
+
+// Initialize base case images when the page loads
+window.addEventListener('DOMContentLoaded', () => {
+    initializeBaseCaseImages();
+});
 
 
 
