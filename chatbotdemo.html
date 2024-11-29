@@ -187,59 +187,59 @@
 
 
 
-    function initializeBaseCaseImages() {
-        const defaultAge = 50; // Replace with your base ageCategory
-        const defaultPolitical = 0; // Replace with your base politicalColor
-        const defaultWealth = 0.5; // Replace with your base wealthStatus
+        function initializeBaseCaseImages() {
+            const defaultAge = 50; // Replace with your base ageCategory
+            const defaultPolitical = 0; // Replace with your base politicalColor
+            const defaultWealth = 0.5; // Replace with your base wealthStatus
 
-        // Set the base image for Bot 1
-        const bot1ImagePath = getCharacterImage(defaultAge, defaultPolitical, defaultWealth);
-        document.getElementById('bot1Image').src = bot1ImagePath;
+            // Set the base image for Bot 1
+            const bot1ImagePath = getCharacterImage(defaultAge, defaultPolitical, defaultWealth);
+            document.getElementById('bot1Image').src = bot1ImagePath;
 
-        // Set the base image for Bot 2
-        const bot2ImagePath = getCharacterImage(defaultAge, defaultPolitical, defaultWealth);
-        document.getElementById('bot2Image').src = bot2ImagePath;
+            // Set the base image for Bot 2
+            const bot2ImagePath = getCharacterImage(defaultAge, defaultPolitical, defaultWealth);
+            document.getElementById('bot2Image').src = bot2ImagePath;
 
-        // Initialize the sliders with the base values
-        document.getElementById('ageSlider1').value = defaultAge;
-        document.getElementById('politicalSlider1').value = defaultPolitical;
-        document.getElementById('wealthSlider1').value = defaultWealth;
-        document.getElementById('ageSlider2').value = defaultAge;
-        document.getElementById('politicalSlider2').value = defaultPolitical;
-        document.getElementById('wealthSlider2').value = defaultWealth;
+            // Initialize the sliders with the base values
+            document.getElementById('ageSlider1').value = defaultAge;
+            document.getElementById('politicalSlider1').value = defaultPolitical;
+            document.getElementById('wealthSlider1').value = defaultWealth;
+            document.getElementById('ageSlider2').value = defaultAge;
+            document.getElementById('politicalSlider2').value = defaultPolitical;
+            document.getElementById('wealthSlider2').value = defaultWealth;
 
-        // Update the displayed values
-        document.getElementById('ageValue1').textContent = defaultAge;
-        document.getElementById('politicalValue1').textContent = defaultPolitical;
-        document.getElementById('wealthValue1').textContent = defaultWealth;
-        document.getElementById('ageValue2').textContent = defaultAge;
-        document.getElementById('politicalValue2').textContent = defaultPolitical;
-        document.getElementById('wealthValue2').textContent = defaultWealth;
-}
+            // Update the displayed values
+            document.getElementById('ageValue1').textContent = defaultAge;
+            document.getElementById('politicalValue1').textContent = defaultPolitical;
+            document.getElementById('wealthValue1').textContent = defaultWealth;
+            document.getElementById('ageValue2').textContent = defaultAge;
+            document.getElementById('politicalValue2').textContent = defaultPolitical;
+            document.getElementById('wealthValue2').textContent = defaultWealth;
+        }
 
-// Event listener for the sliders
-document.querySelectorAll("input[type='range']").forEach(slider => {
-    slider.addEventListener("input", event => {
-        const sliderId = event.target.id;
-        const spanId = sliderId.replace("Slider", "Value");
-        document.getElementById(spanId).textContent = event.target.value;
+        // Event listener for the sliders
+        document.querySelectorAll("input[type='range']").forEach(slider => {
+        slider.addEventListener("input", event => {
+            const sliderId = event.target.id;
+            const spanId = sliderId.replace("Slider", "Value");
+            document.getElementById(spanId).textContent = event.target.value;
 
-        // Update character image
-        const botNumber = sliderId.includes("1") ? "1" : "2";
-        const age = document.getElementById(`ageSlider${botNumber}`).value;
-        const political = document.getElementById(`politicalSlider${botNumber}`).value;
-        const wealth = document.getElementById(`wealthSlider${botNumber}`).value;
-        const imagePath = getCharacterImage(age, political, wealth);
+            // Update character image
+            const botNumber = sliderId.includes("1") ? "1" : "2";
+            const age = document.getElementById(`ageSlider${botNumber}`).value;
+            const political = document.getElementById(`politicalSlider${botNumber}`).value;
+            const wealth = document.getElementById(`wealthSlider${botNumber}`).value;
+            const imagePath = getCharacterImage(age, political, wealth);
 
-        // Set image for the corresponding bot
-        document.getElementById(`bot${botNumber}Image`).src = imagePath;
+            // Set image for the corresponding bot
+            document.getElementById(`bot${botNumber}Image`).src = imagePath;
+        });
     });
-});
 
-// Initialize base case images when the page loads
-window.addEventListener('DOMContentLoaded', () => {
-    initializeBaseCaseImages();
-});
+        // Initialize base case images when the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            initializeBaseCaseImages();
+    });
 
 
 
