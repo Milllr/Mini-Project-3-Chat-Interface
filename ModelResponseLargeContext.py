@@ -36,32 +36,22 @@ def map_political_leaning(leaning):
         return "a far-right traditionalist who strongly advocates for preserving established norms and returning to earlier societal structures"
 
 
-def map_political_leaning(leaning):
+def map_wealth_level(wealth):
     """
-    Maps a numerical political leaning to a detailed descriptive text.
+    Maps a numerical wealth level to a detailed descriptive text.
     """
-    if leaning <= -0.9:
-        return "a far-left progressive activist who strongly advocates for radical changes to achieve social equality"
-    elif -0.9 < leaning <= -0.7:
-        return "a staunch liberal who passionately supports progressive policies and social justice"
-    elif -0.7 < leaning <= -0.5:
-        return "a liberal-minded individual who favors progressive reforms and equality"
-    elif -0.5 < leaning <= -0.3:
-        return "a moderate liberal who leans towards progressive ideas but values some traditional views"
-    elif -0.3 < leaning < 0:
-        return "a slightly liberal person with progressive tendencies"
-    elif leaning == 0:
-        return "a centrist who balances liberal and conservative views"
-    elif 0 < leaning <= 0.3:
-        return "a slightly conservative person with traditional tendencies"
-    elif 0.3 < leaning <= 0.5:
-        return "a moderate conservative who leans towards traditional values but is open to some progressive ideas"
-    elif 0.5 < leaning <= 0.7:
-        return "a conservative-minded individual who favors traditional policies and values"
-    elif 0.7 < leaning <= 0.9:
-        return "a staunch conservative who passionately supports traditional values and policies"
-    elif leaning > 0.9:
-        return "a far-right traditionalist who strongly advocates for preserving established norms and returning to earlier societal structures"
+    if wealth <= 0.1:
+        return "living in poverty, struggling to meet basic needs"
+    elif 0.1 < wealth <= 0.3:
+        return "a low-income individual facing financial challenges"
+    elif 0.3 < wealth <= 0.5:
+        return "a working-class person earning a modest income"
+    elif 0.5 < wealth <= 0.7:
+        return "a middle-class individual with a comfortable but not extravagant lifestyle"
+    elif 0.7 < wealth <= 0.9:
+        return "an affluent person enjoying significant financial comfort"
+    elif wealth > 0.9:
+        return "a wealthy individual with substantial financial resources and luxury"
 
 
 def generate_context(political_leaning, age, wealth_level):
