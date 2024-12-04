@@ -13,7 +13,7 @@ exports.handler = async function(event, context) {
     };
   }
 
-  // Handle CORS - this is really wierd to me but changing it to allow all origins fixed it
+  // Handle CORS
   const headers = {
     'Access-Control-Allow-Origin': '*', // Allow all origins
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -105,10 +105,10 @@ exports.handler = async function(event, context) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
+          model: 'gpt-4o-mini', // or 'gpt-4' if you have access
           messages: [{ role: 'user', content: prompt }],
           temperature: 0.7,
-          max_completion_tokens: 150
+          max_tokens: 150
         })
       });
 
