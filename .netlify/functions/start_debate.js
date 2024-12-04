@@ -2,7 +2,7 @@
 
 const fetch = require('node-fetch');
 
-const ALLOWED_ORIGIN = 'https://milllr.github.io';  // Update with your GitHub Pages URL
+const ALLOWED_ORIGIN = 'https://milllr.github.io/Mini-Project-3-Chat-Interface/';  // Update with your GitHub Pages URL
 
 exports.handler = async function(event, context) {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;

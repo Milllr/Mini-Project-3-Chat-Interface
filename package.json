@@ -1,10 +1,9 @@
 {
-    "name": "Mini-Project-3-Chat-Interface",
+    "name": "mini-project-3-chat-interface",
     "version": "1.0.0",
     "main": "start_debate.js",
     "license": "MIT",
     "dependencies": {
-      "node-fetch": "^2.6.1"
+        "node-fetch": "^2.7.0"
     }
-  }
-  
+}
