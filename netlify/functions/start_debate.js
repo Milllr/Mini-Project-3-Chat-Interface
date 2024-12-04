@@ -1,6 +1,4 @@
 // netlify/functions/start_debate.js
-import fetch from 'node-fetch';
-
 const fetch = require('node-fetch');
 
 exports.handler = async function(event, context) {
@@ -98,10 +96,10 @@ exports.handler = async function(event, context) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'gpt-4o', // Updated model name as per API documentation
+          model: 'gpt-4o-mini', // Updated model name as per API documentation
           messages: [{ role: 'user', content: prompt }],
-          temperature: 0.7,
-          max_tokens: 150
+          temperature: 0.9,
+          max_tokens: 70
         })
       });
 
