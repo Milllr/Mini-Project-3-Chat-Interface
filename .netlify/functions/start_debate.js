@@ -2,25 +2,20 @@
 
 const fetch = require('node-fetch');
 
+const ALLOWED_ORIGIN = 'https://milllr.github.io';  // Update with your GitHub Pages URL
+
 exports.handler = async function(event, context) {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
   if (!OPENAI_API_KEY) {
+    console.error('OpenAI API key is not set.');
     return {
       statusCode: 500,
-      body: 'OpenAI API key not set in environment variables.'
-    };
-  }
-
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
       headers: {
-        'Allow': 'POST',
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
         'Access-Control-Allow-Headers': 'Content-Type',
       },
-      body: 'Method Not Allowed'
+      body: 'OpenAI API key not set in environment variables.'
     };
   }
 
@@ -29,10 +24,23 @@ exports.handler = async function(event, context) {
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
         'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
       },
       body: ''
+    };
+  }
+
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers: {
+        'Allow': 'POST, OPTIONS',
+        'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+      body: 'Method Not Allowed'
     };
   }
 
@@ -167,7 +175,7 @@ exports.handler = async function(event, context) {
     statusCode: 200,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',  // Adjust if needed
+      'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
       'Access-Control-Allow-Headers': 'Content-Type',
     },
     body: JSON.stringify(conversation)
