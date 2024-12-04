@@ -5,14 +5,6 @@ const fetch = require('node-fetch');
 exports.handler = async function(event, context) {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-  if (!OPENAI_API_KEY) {
-    console.error('OpenAI API key is not set.');
-    return {
-      statusCode: 500,
-      body: 'OpenAI API key not set in environment variables.'
-    };
-  }
-
   // Handle CORS
   const headers = {
     'Access-Control-Allow-Origin': '*', // Allow all origins
@@ -105,7 +97,7 @@ exports.handler = async function(event, context) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini', // or 'gpt-4' if you have access
+          model: 'gpt-4o', // Updated model name as per API documentation
           messages: [{ role: 'user', content: prompt }],
           temperature: 0.7,
           max_tokens: 150
@@ -113,6 +105,10 @@ exports.handler = async function(event, context) {
       });
 
       const data = await response.json();
+
+      // Log the API response for debugging purposes
+      console.log('OpenAI API Response:', data);
+
       if (data.error) {
         console.error('OpenAI API Error:', data.error);
         return "I'm sorry, but I'm unable to provide a response at this time.";
