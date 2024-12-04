@@ -111,17 +111,17 @@ exports.handler = async function(event, context) {
 
       if (data.error) {
         console.error('OpenAI API Error:', data.error);
-        return "I'm sorry, but I'm unable to provide a response at this time.";
+        return data.error;
       }
 
       if (data.choices && data.choices.length > 0) {
         return data.choices[0].message.content.trim();
       } else {
-        return "I'm sorry, but I'm unable to provide a response at this time.";
+        return "I'm sorry, Error 2 [Data Choices]";
       }
     } catch (error) {
       console.error('Error calling OpenAI API:', error);
-      return "I'm sorry, but I'm unable to provide a response at this time.";
+      return "I'm sorry, Error 3 [else]";
     }
   }
 
@@ -143,6 +143,8 @@ exports.handler = async function(event, context) {
     const speaker1 = "Bot 1";
     const opponent1 = "Bot 2";
     const prompt1 = `${context1}\n\nDebate Topic: ${debate_topic}\n\nAs ${speaker1}, present a comprehensive and persuasive argument supporting your viewpoint on this topic. Address the points made by ${opponent1} and provide evidence, examples, and reasoning to strengthen your position.\n\nThe debate so far:\n${conversationHistory.map(turn => `${turn.speaker}: ${turn.text}`).join('\n')}\n\n${speaker1}:`;
+    console.log(prompt1);
+
 
     const response1 = await generateResponse(prompt1);
     conversationHistory.push({ speaker: speaker1, text: response1 });
@@ -152,6 +154,8 @@ exports.handler = async function(event, context) {
     const speaker2 = "Bot 2";
     const opponent2 = "Bot 1";
     const prompt2 = `${context2}\n\nDebate Topic: ${debate_topic}\n\nAs ${speaker2}, present a comprehensive and persuasive argument supporting your viewpoint on this topic. Address the points made by ${opponent2} and provide evidence, examples, and reasoning to strengthen your position.\n\nThe debate so far:\n${conversationHistory.map(turn => `${turn.speaker}: ${turn.text}`).join('\n')}\n\n${speaker2}:`;
+    console.log(prompt2);
+
 
     const response2 = await generateResponse(prompt2);
     conversationHistory.push({ speaker: speaker2, text: response2 });
