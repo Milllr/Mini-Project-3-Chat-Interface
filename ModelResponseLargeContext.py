@@ -1,3 +1,8 @@
+##OUTDATED FILE 
+#This file is what I originally built for local use before realizing it had to be published somewhere.
+
+
+
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
