@@ -1,3 +1,21 @@
 {
-	"siteId": "ae5f5ef1-91bb-44db-8736-dac71403b474"
+	"siteId": "ae5f5ef1-91bb-44db-8736-dac71403b474",
+	"geolocation": {
+		"data": {
+			"city": "London",
+			"country": {
+				"code": "CA",
+				"name": "Canada"
+			},
+			"subdivision": {
+				"code": "ON",
+				"name": "Ontario"
+			},
+			"timezone": "America/Toronto",
+			"latitude": 43.0147,
+			"longitude": -81.3049,
+			"postalCode": "N6G"
+		},
+		"timestamp": 1733298060893
+	}
 }
