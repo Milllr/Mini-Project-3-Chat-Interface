@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta Tags and Title -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Character Representation</title>
+    <!-- Styles -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,16 +14,42 @@
             background-color: #f0f0f0;
         }
         .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             padding: 20px;
         }
+        /* Debate Topic Section */
+        .debate-topic {
+            width: 90%;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .debate-topic label {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .debate-topic select, .debate-topic input[type="text"] {
+            width: 300px;
+            padding: 5px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        /* Start Debate Button */
+        .start-debate {
+            margin: 20px;
+            text-align: center;
+        }
+        .start-debate button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        /* Chat Area */
         .chat-area {
             display: flex;
             justify-content: space-between;
             width: 90%;
-            margin-top: 20px;
+            margin: 0 auto;
         }
         .bot-section {
             flex: 1;
@@ -43,21 +71,19 @@
             margin-bottom: 20px;
         }
         .character-image {
-            margin-bottom: 20px; /* Space between header and image */
+            margin-bottom: 20px;
             width: 100px;
             height: 100px;
             border-radius: 50%;
             border: 2px solid #ddd;
-
         }
         .sliders {
             width: 100%;
-            margin-top: 20px; /* Move sliders down */
         }
         .slider {
             display: flex;
             align-items: center;
-            margin: 15px 0; /* More space between each slider */
+            margin: 15px 0;
         }
         .slider label {
             flex: 1;
@@ -70,29 +96,87 @@
             margin-left: 10px;
             font-weight: bold;
         }
-        .messages {
-            flex: 1;
-            width: 100%;
-            height: 300px;
-            overflow-y: auto;
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background: #f9f9f9;
-        }
-        .message {
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
+        /* Chat Interface */
+        .chat-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
             background: #fff;
             border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            max-height: 500px;
+        }
+        .chat-message {
+            display: flex;
+            margin: 10px;
+        }
+        .chat-message.bot1 {
+            justify-content: flex-start;
+        }
+        .chat-message.bot2 {
+            justify-content: flex-end;
+        }
+        .chat-bubble {
+            max-width: 60%;
+            padding: 10px;
+            border-radius: 10px;
+            background: #e0f7fa;
+            position: relative;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .chat-message.bot2 .chat-bubble {
+            background: #ffe0b2;
+        }
+        /* Loader */
+        .loader {
+            border: 6px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 6px solid #3498db;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .chat-area {
+                flex-direction: column;
+                align-items: center;
+            }
+            .bot-section {
+                width: 100%;
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Debate Topic Selection -->
+        <div class="debate-topic">
+            <label for="debateTopic">Debate Topic:</label>
+            <select id="debateTopic">
+                <option value="">-- Select a Topic --</option>
+                <option value="Should abortion remain a legal right for all individuals?">Should abortion remain a legal right for all individuals?</option>
+                <option value="Should government policies prioritize environmental conservation over economic growth?">Should government policies prioritize environmental conservation over economic growth?</option>
+                <option value="Is universal basic income a viable solution to economic inequality?">Is universal basic income a viable solution to economic inequality?</option>
+                <!-- Add more predefined topics as needed -->
+            </select>
+            <span>or</span>
+            <input type="text" id="customTopic" placeholder="Enter custom topic">
+        </div>
+
+        <!-- Bot Configuration Sections -->
         <div class="chat-area">
+            <!-- Bot 1 Section -->
             <div class="bot-section" id="bot1">
                 <h2>Bot 1</h2>
                 <img src="" id="bot1Image" class="character-image" alt="Character">
@@ -113,8 +197,8 @@
                         <span id="wealthValue1">0.5</span>
                     </div>
                 </div>
-                <div class="messages" id="bot1Messages"></div>
             </div>
+            <!-- Bot 2 Section -->
             <div class="bot-section" id="bot2">
                 <h2>Bot 2</h2>
                 <img src="" id="bot2Image" class="character-image" alt="Character">
@@ -135,12 +219,26 @@
                         <span id="wealthValue2">0.5</span>
                     </div>
                 </div>
-                <div class="messages" id="bot2Messages"></div>
             </div>
         </div>
+
+        <!-- Start Debate Button -->
+        <div class="start-debate">
+            <button id="startDebateBtn">Start Debate</button>
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="chat-container" id="chatContainer">
+            <!-- Messages will be displayed here -->
+        </div>
+
+        <!-- Loader -->
+        <div class="loader" id="loader" style="display: none;"></div>
+
     </div>
+    <!-- JavaScript -->
     <script>
-        // Helper function to determine character based on slider values
+        // Helper function to determine character image based on slider values
         function getCharacterImage(age, political, wealth) {
             let ageCategory, politicalColor, wealthStatus;
 
@@ -157,40 +255,20 @@
             else if (political <= 1 && political > 0.2) politicalColor = "red";
             else politicalColor = "";
 
-            // Wealth doesn't affect the image, but could be used for future expansion
-            if (wealth > 0.5) wealthStatus = "rich";
-            else if (wealth < 0.5) wealthStatus = "poor";
-            else wealthStatus = "";
+            // Determine wealth status
+            if (wealth > 0.7) wealthStatus = "rich";
+            else if (wealth < 0.3) wealthStatus = "poor";
+            else wealthStatus = "middle";
 
             // Combine to create the image path
-            return `images/${ageCategory}/${ageCategory}_${politicalColor}_${wealthStatus}0.JPG`;
+            return `images/${ageCategory}/${ageCategory}_${politicalColor}_${wealthStatus}.jpg`;
         }
-        
 
-        // Update slider values dynamically and adjust images
-        document.querySelectorAll("input[type='range']").forEach(slider => {
-            slider.addEventListener("input", event => {
-                const sliderId = event.target.id;
-                const spanId = sliderId.replace("Slider", "Value");
-                document.getElementById(spanId).textContent = event.target.value;
-
-                // Update character image
-                const botNumber = sliderId.includes("1") ? "1" : "2";
-                const age = document.getElementById(`ageSlider${botNumber}`).value;
-                const political = document.getElementById(`politicalSlider${botNumber}`).value;
-                const wealth = document.getElementById(`wealthSlider${botNumber}`).value;
-                const imagePath = getCharacterImage(age, political, wealth);
-
-                // Set image for the corresponding bot
-                document.getElementById(`bot${botNumber}Image`).src = imagePath;
-            });
-
-
-
+        // Initialize Base Case Images
         function initializeBaseCaseImages() {
-            const defaultAge = 50; // Replace with your base ageCategory
-            const defaultPolitical = 0; // Replace with your base politicalColor
-            const defaultWealth = 0.5; // Replace with your base wealthStatus
+            const defaultAge = 50;
+            const defaultPolitical = 0;
+            const defaultWealth = 0.5;
 
             // Set the base image for Bot 1
             const bot1ImagePath = getCharacterImage(defaultAge, defaultPolitical, defaultWealth);
@@ -217,45 +295,113 @@
             document.getElementById('wealthValue2').textContent = defaultWealth;
         }
 
-        // Event listener for the sliders
+        // Update slider values dynamically and adjust images
         document.querySelectorAll("input[type='range']").forEach(slider => {
-        slider.addEventListener("input", event => {
-            const sliderId = event.target.id;
-            const spanId = sliderId.replace("Slider", "Value");
-            document.getElementById(spanId).textContent = event.target.value;
+            slider.addEventListener("input", event => {
+                const sliderId = event.target.id;
+                const spanId = sliderId.replace("Slider", "Value");
+                document.getElementById(spanId).textContent = event.target.value;
 
-            // Update character image
-            const botNumber = sliderId.includes("1") ? "1" : "2";
-            const age = document.getElementById(`ageSlider${botNumber}`).value;
-            const political = document.getElementById(`politicalSlider${botNumber}`).value;
-            const wealth = document.getElementById(`wealthSlider${botNumber}`).value;
-            const imagePath = getCharacterImage(age, political, wealth);
+                // Update character image
+                const botNumber = sliderId.includes("1") ? "1" : "2";
+                const age = document.getElementById(`ageSlider${botNumber}`).value;
+                const political = document.getElementById(`politicalSlider${botNumber}`).value;
+                const wealth = document.getElementById(`wealthSlider${botNumber}`).value;
+                const imagePath = getCharacterImage(age, political, wealth);
 
-            // Set image for the corresponding bot
-            document.getElementById(`bot${botNumber}Image`).src = imagePath;
+                // Set image for the corresponding bot
+                document.getElementById(`bot${botNumber}Image`).src = imagePath;
+            });
         });
-    });
+
+        // Get Debate Topic
+        function getDebateTopic() {
+            const selectedTopic = document.getElementById('debateTopic').value;
+            const customTopic = document.getElementById('customTopic').value.trim();
+            return customTopic || selectedTopic || "No topic selected";
+        }
+
+        // Display Conversation
+        function displayConversation(conversation) {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.innerHTML = ''; // Clear previous messages
+
+            conversation.forEach(turn => {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('chat-message', turn.speaker === 'Bot 1' ? 'bot1' : 'bot2');
+
+                const bubbleDiv = document.createElement('div');
+                bubbleDiv.classList.add('chat-bubble');
+                bubbleDiv.textContent = turn.text;
+
+                messageDiv.appendChild(bubbleDiv);
+                chatContainer.appendChild(messageDiv);
+
+                // Scroll to the bottom
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            });
+        }
+
+        // Event Listener for Start Debate Button
+        document.getElementById('startDebateBtn').addEventListener('click', () => {
+            // Show loader
+            document.getElementById('loader').style.display = 'block';
+            // Clear previous conversation
+            document.getElementById('chatContainer').innerHTML = '';
+
+            // Get bot settings
+            const bot1Settings = {
+                age: document.getElementById('ageSlider1').value,
+                political: document.getElementById('politicalSlider1').value,
+                wealth: document.getElementById('wealthSlider1').value
+            };
+            const bot2Settings = {
+                age: document.getElementById('ageSlider2').value,
+                political: document.getElementById('politicalSlider2').value,
+                wealth: document.getElementById('wealthSlider2').value
+            };
+
+            const debateTopic = getDebateTopic();
+
+            // Prepare data to send to backend
+            const data = {
+                bot1: bot1Settings,
+                bot2: bot2Settings,
+                debateTopic: debateTopic
+            };
+
+            // Send data to backend via Fetch API
+            fetch('https://golden-tapioca-283684.netlify.app/.netlify/functions/start_debate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(conversation => {
+                // Hide loader
+                document.getElementById('loader').style.display = 'none';
+                displayConversation(conversation);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Hide loader
+                document.getElementById('loader').style.display = 'none';
+                alert('An error occurred while starting the debate. Please try again later.');
+            });
+        });
 
         // Initialize base case images when the page loads
         window.addEventListener('DOMContentLoaded', () => {
             initializeBaseCaseImages();
-    });
-
-
-
-            // to do list
-            // 1. add comments and human stuff 
-            // 2. implement wealth images from jade
-            // 3. make them talk
-            // 4. add text output from code
-            // 5. add default image case
-
-            
-
         });
+
     </script>
 </body>
 </html>
-
-
-
