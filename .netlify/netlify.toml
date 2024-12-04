@@ -5,6 +5,7 @@ headers = []
 redirects = []
 
 [build]
+command = "npm install"
 publish = "C:\\Users\\mille\\GItHub Projects\\Mini-Project-3-Chat-Interface"
 publishOrigin = "default"
 functions = "C:\\Users\\mille\\GItHub Projects\\Mini-Project-3-Chat-Interface\\netlify\\functions"
