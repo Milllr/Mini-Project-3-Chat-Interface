@@ -2,8 +2,6 @@
 
 const fetch = require('node-fetch');
 
-const ALLOWED_ORIGIN = 'https://milllr.github.io/Mini-Project-3-Chat-Interface/';  // Update with your GitHub Pages URL
-
 exports.handler = async function(event, context) {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
@@ -11,23 +9,21 @@ exports.handler = async function(event, context) {
     console.error('OpenAI API key is not set.');
     return {
       statusCode: 500,
-      headers: {
-        'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
       body: 'OpenAI API key not set in environment variables.'
     };
   }
 
-  // Handle CORS preflight request
+  // Handle CORS - this is really wierd to me but changing it to allow all origins fixed it
+  const headers = {
+    'Access-Control-Allow-Origin': '*', // Allow all origins
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json'
+  };
+
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      },
+      headers,
       body: ''
     };
   }
@@ -35,11 +31,7 @@ exports.handler = async function(event, context) {
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      headers: {
-        'Allow': 'POST, OPTIONS',
-        'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
+      headers,
       body: 'Method Not Allowed'
     };
   }
@@ -173,11 +165,7 @@ exports.handler = async function(event, context) {
   // Return the conversation as JSON
   return {
     statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-      'Access-Control-Allow-Headers': 'Content-Type',
-    },
+    headers,
     body: JSON.stringify(conversation)
   };
 };

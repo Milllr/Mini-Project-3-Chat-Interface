@@ -371,12 +371,12 @@
             };
 
             // Send data to backend via Fetch API
-            fetch('https://golden-tapioca-283684.netlify.app/.netlify/functions/start_debate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
+            fetch('/.netlify/functions/start_debate', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
             })
             .then(response => {
                 if (!response.ok) {
