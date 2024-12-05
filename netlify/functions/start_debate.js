@@ -1,3 +1,13 @@
+//start_debate.js is the backend that does all of the actual debate handling
+
+/*  inspired by code.py:
+    the file is in two separate folders because I DONT KNOW it literally was the only way to make it work
+    anyways, this file handles the fetch function from the front end and returns the entire completed 
+    transcript betweeen the two bots. it is really finnicky so changes to this file were minimal other
+    than porting it to javascript because that made it much easier to host on netlify.
+*/
+
+
 // netlify/functions/start_debate.js
 const fetch = require('node-fetch');
 
@@ -11,6 +21,7 @@ exports.handler = async function(event, context) {
     'Content-Type': 'application/json'
   };
 
+  //different options handling
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -36,7 +47,7 @@ exports.handler = async function(event, context) {
 
   // Helper functions
   function mapPoliticalLeaning(leaning) {
-    // Map numerical leaning to descriptive text
+    // Map numerical leaning to descriptive text to feed context to model
     const lean = parseFloat(leaning);
     if (lean <= -0.9) {
       return "a far-left progressive activist who strongly advocates for radical changes to achieve social equality";
@@ -64,7 +75,7 @@ exports.handler = async function(event, context) {
   }
 
   function mapWealthLevel(wealth) {
-    // Map numerical wealth level to descriptive text
+    // Map numerical wealth level to descriptive text also for added context to model
     const wealthVal = parseFloat(wealth);
     if (wealthVal <= 0.1) {
       return "living in poverty, struggling to meet basic needs";
@@ -81,12 +92,14 @@ exports.handler = async function(event, context) {
     }
   }
 
+  //this generates the context of the background of openai completions call
   function generateContext(politicalLeaning, age, wealthLevel) {
     const leaningDesc = mapPoliticalLeaning(politicalLeaning);
     const wealthDesc = mapWealthLevel(wealthLevel);
     return `You are ${leaningDesc}, ${age} years old, and ${wealthDesc}. You must engage in the debate by presenting arguments that align with your political beliefs and socio-economic background. Your responses should reflect your perspective and experiences as someone from this background.`;
   }
 
+  //ripped straight from the openai api documentation 
   async function generateResponse(prompt) {
     try {
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -105,6 +118,8 @@ exports.handler = async function(event, context) {
 
       const data = await response.json();
 
+
+      //DEBUGGING
       // Log the API response for debugging purposes
       console.log('OpenAI API Response:', data);
 
@@ -122,6 +137,7 @@ exports.handler = async function(event, context) {
       console.error('Error calling OpenAI API:', error);
       return "I'm sorry, Error 3 [else]";
     }
+    //END OF DEBUGGING
   }
 
   // Generate contexts
